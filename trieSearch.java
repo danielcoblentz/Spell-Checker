@@ -1,14 +1,17 @@
 import java.util.*;
 import java.io.*;
 
-public class trieSearch {
+public class TrieSearch{
     private static TSTNode root;
 
-    static class TSTNode {
-        char data;
-        boolean isEndOfString;
-        TSTNode left, middle, right;
 
+     
+    static class TSTNode {
+        char data; // The character this node represents
+        boolean isEndOfString; // Flag to check if this node marks the end of a word
+        TSTNode left, middle, right; // Pointers to left, middle, and right child nodes
+
+       
         public TSTNode(char data) {
             this.data = data;
             this.isEndOfString = false;
@@ -19,14 +22,14 @@ public class trieSearch {
     }
 
     public static void main(String[] args) {
-        String dictPath = "dictionary.txt";
-        String filePath = "testfile.txt";
+        String dictPath = "dictionary.txt"; // Path to the dictionary file
+        String filePath = "testfile.txt"; // Path to the file to be spell-checked
         root = null;
 
-        // Load the dictionary into the TST
+        // Load words from the dictionary into the TST
         try (Scanner scanner = new Scanner(new File(dictPath))) {
             while (scanner.hasNext()) {
-                String word = scanner.next().toLowerCase(); // ensure all words are lowercase
+                String word = scanner.next().toLowerCase(); // Convert words to lowercase for uniformity
                 insert(word);
             }
         } catch (FileNotFoundException e) {
@@ -34,16 +37,17 @@ public class trieSearch {
             System.exit(1);
         }
 
-        // Read and check each line of the file
+        // Check the spelling in the file line by line
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             int lineCount = 0;
 
             while ((line = reader.readLine()) != null) {
                 lineCount++;
-                String[] words = line.split("\\W+");
+                String[] words = line.split("\\W+"); // Split the line into words using non-word delimiters
 
-                for (String word : words) {
+                for (int i = 0; i < words.length; i++) {
+                    String word = words[i];
                     if (!word.isEmpty() && !search(root, word.toLowerCase())) {
                         System.out.println("Misspelled word '" + word + "' found at line " + lineCount);
                     }
@@ -55,10 +59,12 @@ public class trieSearch {
         }
     }
 
+    // Method to insert a word into the TST
     public static void insert(String word) {
         root = insertRec(root, word, 0);
     }
 
+    // Recursive method to insert a character of the word into the TST
     public static TSTNode insertRec(TSTNode current, String word, int index) {
         if (index < word.length()) {
             char ch = word.charAt(index);
@@ -80,10 +86,12 @@ public class trieSearch {
         return current;
     }
 
+    // Method to search for a word in the TST
     public static boolean search(TSTNode current, String word) {
         return searchRec(current, word, 0);
     }
 
+    // Recursive method to search for a character of the word in the TST
     public static boolean searchRec(TSTNode current, String word, int index) {
         if (current == null) return false;
         char ch = word.charAt(index);
