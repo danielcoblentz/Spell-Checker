@@ -50,7 +50,7 @@ class TST
 private class Node {
     char c;                      // the character stored in this node
     Node left, mid, right;       // pointers to left, middle, and right child nodes
-    boolean end;                 //flag to indicate if this node marks the end of a worc
+    boolean end;                 //flag to indicate if this node marks the end of a word
 
 
     // constructor for Node class including char c parameter
@@ -74,6 +74,8 @@ private boolean contains(Node x, String s, int d)
     else if (d < s.length()-1) return contains(x.mid, s, d+1);  // character matches and not at the end of the string search the middle
     else return x.end;  // at the end of the string return true if it's marked as an end of a word
 }
+
+
         //method to add a string to the trie.
     public void add(String s)
     { root = add(root, s.toLowerCase(), 0); } // start by adding from the root making the given string lowercase
