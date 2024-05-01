@@ -20,7 +20,7 @@ public class TrieSearch {
             System.exit(0);
         }
 
-        // Open and process a document file
+        // Open and process a document file same as part 1
         try (Scanner inputStream = new Scanner(new File(documentFileName))) {
             int lineNumber = 0; 
             while (inputStream.hasNextLine()) {
@@ -35,13 +35,13 @@ public class TrieSearch {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Document file not found"); // error message if doc cannot be opened
+            System.out.println("Document file not found"); 
             System.exit(0);
         }
     }
 }
 
-// implementation of the ternary search trie data structure.
+// implementation of  ternary search trie data structure.
 class TST
 {
     //initialized root
@@ -71,22 +71,24 @@ private boolean contains(Node x, String s, int d)
     char c = s.charAt(d);
     if (c < x.c) return contains(x.left, s, d); // character is less than current node's character then search left
     else if (c > x.c) return contains(x.right, s, d); // same as one above just searching right not left
-    else if (d < s.length()-1) return contains(x.mid, s, d+1);
-    else return x.end;
+    else if (d < s.length()-1) return contains(x.mid, s, d+1);  // character matches and not at the end of the string search the middle
+    else return x.end;  // at the end of the string return true if it's marked as an end of a word
 }
-
+        //method to add a string to the trie.
     public void add(String s)
-    { root = add(root, s.toLowerCase(), 0); }
+    { root = add(root, s.toLowerCase(), 0); } // start by adding from the root making the given string lowercase
 
+
+        // recursive method to add a string to the trie creating new nodes as necessary in the trie
     private Node add(Node x, String s, int d)
     {
-        char c = s.charAt(d);
-        if (x == null) x = new Node(c);
-        if (c < x.c) x.left = add(x.left, s, d);
-        else if (c > x.c) x.right = add(x.right, s, d);
-        else if (d < s.length()-1) x.mid = 	add(x.mid, s, d+1);
-        else x.end = true;
-        return x;
+        char c = s.charAt(d);           // retrieve the character at the current depth in the string
+        if (x == null) x = new Node(c);             // if there is no node create a new one with the current character
+        if (c < x.c) x.left = add(x.left, s, d);            // character less than current nodes character add to left
+        else if (c > x.c) x.right = add(x.right, s, d);             // character is grater than current node add to right
+        else if (d < s.length()-1) x.mid = 	add(x.mid, s, d+1);             // character matches and not at the end of a string add to middle
+        else x.end = true;          // mark as end of the string mark node as end of a word
+        return x;       //return the modified node
     }
 
 }
