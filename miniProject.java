@@ -28,7 +28,7 @@ public class miniProject {
                 String[] words = line.split("\\W+"); // split line into words using non-word characters
 
                 for (String word : words) {
-                    if (!word.isEmpty() && !isNumeric(word) && !binarySearch(dictionary, word.toLowerCase())) {
+                    if (!word.isEmpty() && !binarySearch(dictionary, word.toLowerCase())) {
                         System.out.println("Misspelled word '" + word + "' found at line " + lineCount);
                     }
                 }
@@ -39,10 +39,8 @@ public class miniProject {
         }
     }
 
-    // method to check if the string is numeric 
-    public static boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?"); // match a number with optional '-' and decimal.
-    }
+  
+    
 
     // Implement binary search to find words in the dictionary and compaire to testing file
     public static boolean binarySearch(ArrayList<String> list, String key) {
