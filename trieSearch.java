@@ -1,110 +1,92 @@
-import java.util.*;
 import java.io.*;
+import java.util.Scanner;
 
-public class TrieSearch{
-    private static TSTNode root;
+/*note* most of the code below is from the first part of the mini-term project */
 
-
-     
-    static class TSTNode {
-        char data; // The character this node represents
-        boolean isEndOfString; // Flag to check if this node marks the end of a word
-        TSTNode left, middle, right; // Pointers to left, middle, and right child nodes
-
-       
-        public TSTNode(char data) {
-            this.data = data;
-            this.isEndOfString = false;
-            this.left = null;
-            this.middle = null;
-            this.right = null;
-        }
-    }
-
+public class TrieSearch {
     public static void main(String[] args) {
-        String dictPath = "dictionary.txt"; // Path to the dictionary file
-        String filePath = "testfile.txt"; // Path to the file to be spell-checked
-        root = null;
+        String dictionaryFileName = "dictionary.txt";
+        String documentFileName = "testfile.txt";
+        TST tst = new TST(); // initializes TST class to create a new object
 
-        // Load words from the dictionary into the TST
-        try (Scanner scanner = new Scanner(new File(dictPath))) {
-            while (scanner.hasNext()) {
-                String word = scanner.next().toLowerCase(); // Convert words to lowercase for uniformity
-                insert(word);
+        // Load words from a dictionary into the TST
+        try (Scanner inputStream = new Scanner(new File(dictionaryFileName))) {
+            while (inputStream.hasNextLine()) {
+                String word = inputStream.nextLine().toLowerCase(); 
+                tst.add(word);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Dictionary file not found.");
-            System.exit(1);
+            System.out.println("Dictionary file not found"); 
+            System.exit(0);
         }
 
-        // Check the spelling in the file line by line
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            int lineCount = 0;
-
-            while ((line = reader.readLine()) != null) {
-                lineCount++;
-                String[] words = line.split("\\W+"); // Split the line into words using non-word delimiters
+        // Open and process a document file
+        try (Scanner inputStream = new Scanner(new File(documentFileName))) {
+            int lineNumber = 0; 
+            while (inputStream.hasNextLine()) {
+                lineNumber++; 
+                String line = inputStream.nextLine().toLowerCase();
+                String[] words = line.split("\\W+");
 
                 for (int i = 0; i < words.length; i++) {
-                    String word = words[i];
-                    if (!word.isEmpty() && !search(root, word.toLowerCase())) {
-                        System.out.println("Misspelled word '" + word + "' found at line " + lineCount);
+                    if (!words[i].isEmpty() && !tst.contains(words[i])) {
+                        System.out.println(words[i] + " is not found in the dictionary at line #" + lineNumber); // prints out the mispelled word and the corresponding line # to the user
                     }
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + filePath);
-            System.exit(1);
+        } catch (FileNotFoundException e) {
+            System.out.println("Document file not found"); // error message if doc cannot be opened
+            System.exit(0);
         }
     }
+}
 
-    // Method to insert a word into the TST
-    public static void insert(String word) {
-        root = insertRec(root, word, 0);
+// implementation of the ternary search trie data structure.
+class TST
+{
+    //initialized root
+    Node root;
+
+private class Node {
+    char c;                      // the character stored in this node
+    Node left, mid, right;       // pointers to left, middle, and right child nodes
+    boolean end;                 //flag to indicate if this node marks the end of a worc
+
+
+    // constructor for Node class including char c parameter
+    public Node(char c) {
+        this.c = c;
+    }
+}
+ //  method to check if the trie contains a specific string
+public boolean contains(String s)
+{
+
+    return contains(root, s.toLowerCase(), 0); // start the search from the root making the string lowercase
+}
+// Recursive method to check if a string is in the trie, navigating through nodes based on character comparison
+private boolean contains(Node x, String s, int d)
+{
+    if (x == null) return false; // if node is null the string is not found
+    char c = s.charAt(d);
+    if (c < x.c) return contains(x.left, s, d); // character is less than current node's character then search left
+    else if (c > x.c) return contains(x.right, s, d); // same as one above just searching right not left
+    else if (d < s.length()-1) return contains(x.mid, s, d+1);
+    else return x.end;
+}
+
+    public void add(String s)
+    { root = add(root, s.toLowerCase(), 0); }
+
+    private Node add(Node x, String s, int d)
+    {
+        char c = s.charAt(d);
+        if (x == null) x = new Node(c);
+        if (c < x.c) x.left = add(x.left, s, d);
+        else if (c > x.c) x.right = add(x.right, s, d);
+        else if (d < s.length()-1) x.mid = 	add(x.mid, s, d+1);
+        else x.end = true;
+        return x;
     }
 
-    // Recursive method to insert a character of the word into the TST
-    public static TSTNode insertRec(TSTNode current, String word, int index) {
-        if (index < word.length()) {
-            char ch = word.charAt(index);
-            if (current == null) {
-                current = new TSTNode(ch);
-            }
-            if (ch < current.data) {
-                current.left = insertRec(current.left, word, index);
-            } else if (ch > current.data) {
-                current.right = insertRec(current.right, word, index);
-            } else {
-                if (index + 1 < word.length()) {
-                    current.middle = insertRec(current.middle, word, index + 1);
-                } else {
-                    current.isEndOfString = true;
-                }
-            }
-        }
-        return current;
-    }
-
-    // Method to search for a word in the TST
-    public static boolean search(TSTNode current, String word) {
-        return searchRec(current, word, 0);
-    }
-
-    // Recursive method to search for a character of the word in the TST
-    public static boolean searchRec(TSTNode current, String word, int index) {
-        if (current == null) return false;
-        char ch = word.charAt(index);
-
-        if (ch < current.data) {
-            return searchRec(current.left, word, index);
-        } else if (ch > current.data) {
-            return searchRec(current.right, word, index);
-        } else {
-            if (index == word.length() - 1) {
-                return current.isEndOfString;
-            }
-            return searchRec(current.middle, word, index + 1);
-        }
-    }
 }

@@ -11,7 +11,7 @@ public class miniProject {
         // Load the dictionary from the file
         try (Scanner scanner = new Scanner(new File(dictPath))) {
             while (scanner.hasNext()) {
-                dictionary.add(scanner.next().toLowerCase()); // add each word  to the dictionary after converting it to lowercase
+                dictionary.add(scanner.next().toLowerCase()); //converts to lowercase characters for case sensentity
             }
         } catch (FileNotFoundException e) { 
             System.out.println("Dictionary file not found.");
@@ -23,7 +23,7 @@ public class miniProject {
         // Process the file to be checked for spelling errors.
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            int lineCount = 0; // Line counter to track the line number of potential spelling errors.
+            int lineCount = 0; // Line counter to track the line number of potential spelling errors to print out later to user
 
 
             //read the file line by line
@@ -33,7 +33,7 @@ public class miniProject {
 
 
 // Check each word against the dictionary.
-//!word.isempty() ensures that the word is a real string with hcaracters
+//!word.isempty() ensures that the word is a real string with characters
 for (int i = 0; i < words.length; i++) {
     String word = words[i];
     if (!word.isEmpty() && !binarySearch(dictionary, word.toLowerCase())) {
@@ -61,9 +61,9 @@ for (int i = 0; i < words.length; i++) {
 
             int cmp = midVal.compareTo(key); // compare to the mid value with the word(key)
 
-            if (cmp < 0) { // narrowing the search range to upper half
+            if (cmp < 0) { // search range to upper half
                 low = mid + 1;
-            } else if (cmp > 0) {  // narrowing the search range to lower half
+            } else if (cmp > 0) {  // search range to lower half
                 high = mid - 1;
             } else {
                 return true; // key found then the word is spelled correcly
