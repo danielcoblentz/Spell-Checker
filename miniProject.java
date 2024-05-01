@@ -13,7 +13,7 @@ public class miniProject {
             while (scanner.hasNext()) {
                 dictionary.add(scanner.next().toLowerCase()); // add each word  to the dictionary after converting it to lowercase
             }
-        } catch (FileNotFoundException e) { // in case file is not found print an error message
+        } catch (FileNotFoundException e) { 
             System.out.println("Dictionary file not found.");
             System.exit(1);
         }
@@ -33,11 +33,13 @@ public class miniProject {
 
 
 // Check each word against the dictionary.
-                for (String word : words) {
-                    if (!word.isEmpty() && !binarySearch(dictionary, word.toLowerCase())) {
-                        System.out.println("Misspelled word '" + word + "' found at line " + lineCount);
-                    }
-                }
+//!word.isempty() ensures that the word is a real string with hcaracters
+for (int i = 0; i < words.length; i++) {
+    String word = words[i];
+    if (!word.isEmpty() && !binarySearch(dictionary, word.toLowerCase())) {
+        System.out.println("Misspelled word '" + word + "' found at line " + lineCount);
+    }
+}
             }
         } catch (IOException e) {
             System.out.println("Error reading file: " + filePath);
@@ -57,12 +59,11 @@ public class miniProject {
             int mid = low + (high - low) / 2; //calculate the middle index
             String midVal = list.get(mid); // retrieve the middle index
 
-            int cmp = midVal.compareTo(key); // compair the mid value with the key
-//adjust search range based on result above
+            int cmp = midVal.compareTo(key); // compair the mid value with the word(key)
 
-            if (cmp < 0) {
+            if (cmp < 0) { // narrowing the search range to upper half
                 low = mid + 1;
-            } else if (cmp > 0) {
+            } else if (cmp > 0) {  // narrowing the search range to lower half
                 high = mid - 1;
             } else {
                 return true; // key found
