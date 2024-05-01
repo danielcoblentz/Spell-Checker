@@ -56,19 +56,19 @@ for (int i = 0; i < words.length; i++) {
         int high = list.size() - 1; //ending index of the search range
 
         while (low <= high) {
-            int mid = low + (high - low) / 2; //calculate the middle index
+            int mid = low + (high - low) / 2; //calculate the middle index of the search
             String midVal = list.get(mid); // retrieve the middle index
 
-            int cmp = midVal.compareTo(key); // compair the mid value with the word(key)
+            int cmp = midVal.compareTo(key); // compare to the mid value with the word(key)
 
             if (cmp < 0) { // narrowing the search range to upper half
                 low = mid + 1;
             } else if (cmp > 0) {  // narrowing the search range to lower half
                 high = mid - 1;
             } else {
-                return true; // key found
+                return true; // key found then the word is spelled correcly
             }
         }
-        return false; // key not found
+        return false; // key not found should mark if a word is spelled incorrectly
     }
 }
