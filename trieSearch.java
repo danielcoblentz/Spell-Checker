@@ -20,7 +20,7 @@ public class trieSearch {
 
     public static void main(String[] args) {
         String dictPath = "dictionary.txt";
-        String filePath = "testingfile.txt";
+        String filePath = "testfile.txt";
         root = null;
 
         // Load the dictionary into the TST
