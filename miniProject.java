@@ -36,7 +36,7 @@ public class miniProject {
 //!word.isempty() ensures that the word is a real string with characters
 for (int i = 0; i < words.length; i++) {
     String word = words[i];
-    if (!word.isEmpty() && !binarySearch(dictionary, word.toLowerCase())) {
+    if (!word.isEmpty() && !binarySearch(dictionary, word.toLowerCase())) { // if they word is not mepty and is not found in the dictionary then prints out the following
         System.out.println("Misspelled word '" + word + "' found at line " + lineCount);
     }
 }
@@ -72,3 +72,8 @@ for (int i = 0; i < words.length; i++) {
         return false; // key not found should mark if a word is spelled incorrectly
     }
 }
+
+
+//If the result is negative, it means that midVal is less than key, so the search range is narrowed to the upper half by updating low = mid + 1.
+//If the result is positive, it means that midVal is greater than key, so the search range is narrowed to the lower half by updating high = mid - 1
+//If the comparison result is zero, it means that midVal is equal to key, so the key is found, and the method returns true

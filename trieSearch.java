@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 /*note* most of the code below is from the first part of the mini-term project */
 
-public class TrieSearch {
+public class trieSearch {
     public static void main(String[] args) {
         String dictionaryFileName = "dictionary.txt";
         String documentFileName = "testfile.txt";
@@ -62,7 +62,7 @@ private class Node {
 public boolean contains(String s)
 {
 
-    return contains(root, s.toLowerCase(), 0); // start the search from the root making the string lowercase
+    return contains(root, s.toLowerCase(), 0); // start the search from the root after making the string lowercase
 }
 // Recursive method to check if a string is in the trie, navigating through nodes based on character comparison
 private boolean contains(Node x, String s, int d)
