@@ -1,5 +1,4 @@
-# mini-term project CS 202 spell checker
-Trie Search Spell Checker
+#  Spell Checker
 The Trie Search Spell Checker is a Java application that reads a dictionary file and checks the spelling of words in a document file using a ternary search trie (TST) data structure. This project demonstrates efficient word storage and retrieval using TSTs.
 
 Features
