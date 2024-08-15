@@ -94,16 +94,24 @@ public class miniProject {
     public static void suggestSimilarWords(ArrayList<String> dictionary, String misspelled) {
         final int MAX_SUGGESTIONS = 3; // Limit to a few close suggestions
         PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
-
+        final int MAX_DISTANCE = 3; // Adjust this threshold as needed
+    
         for (String word : dictionary) {
-            int dist = editDistance(misspelled, word);
-            pq.offer(new AbstractMap.SimpleEntry<>(word, dist));
+            int dist = editDistance(misspelled.toLowerCase(), word);
+            if (dist <= MAX_DISTANCE) { // Only consider words within the max distance
+                pq.offer(new AbstractMap.SimpleEntry<>(word, dist));
+            }
         }
-
-        System.out.print("Did you mean: ");
-        for (int i = 0; i < MAX_SUGGESTIONS && !pq.isEmpty(); i++) {
-            System.out.print(pq.poll().getKey() + "? ");
+    
+        if (pq.isEmpty()) {
+            System.out.println("No close matches found.");
+        } else {
+            System.out.print("Did you mean: ");
+            for (int i = 0; i < MAX_SUGGESTIONS && !pq.isEmpty(); i++) {
+                System.out.print(pq.poll().getKey() + (i < MAX_SUGGESTIONS - 1 && !pq.isEmpty() ? ", " : "? "));
+            }
+            System.out.println();
         }
-        System.out.println();
     }
+    
 }
