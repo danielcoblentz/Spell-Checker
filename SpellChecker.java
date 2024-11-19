@@ -122,14 +122,14 @@ public class SpellChecker {
                 }
             }
         }
-        return dp[len1][len2]; // edit distance
+        return dp[len1][len2]; // return edit distance
     }
 
 
 //method to suggest similar words for a misspeleld word
     private static void suggestSimilarWords(ArrayList<String> dictionary, String misspelled) { // implement a way to sugggest similar words within a certain edit distance 1-3, 2 seems ot be the most accurate
         final int MAX_SUGGESTIONS = 3; // num of suggestions if a word is spelled incorrectly
-        final int MAX_DISTANCE = 3; // edit distance (1-3) works best
+        final int MAX_DISTANCE = 3; // edit distance (1-3) has higher accuracy
 
         PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
 //calc edit distance for each wordin the dictionary
@@ -141,7 +141,8 @@ public class SpellChecker {
         }
 
 
-    //dsipaly suggestions to user in the command line after running program
+
+    //dsipaly suggestions to user in the command line 
         if (pq.isEmpty()) {
             System.out.println("no close matches found for '" + misspelled + "'.");
         } else {
